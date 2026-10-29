@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: mgk-crm
+    runtime: docker
+    plan: starter                 # persistent disks need a paid instance
+    healthCheckPath: /api/health
+    autoDeploy: true
+    disk: { name: crm-data, mountPath: /data, sizeGB: 1 }
+    envVars:
+      - { key: ENV, value: production }
+      - { key: CRM_DB_PATH, value: /data/crm.db }
+      - { key: CRM_TIMEZONE, value: Africa/Lagos }
+      - { key: CRM_API_KEY, generateValue: true }     # Kora's key: copy into the mgk-crm-api skill
+      - { key: SECRET_KEY, generateValue: true }      # signs team login sessions
+      - { key: ADMIN_EMAIL, sync: false }             # first admin, created on first boot only
+      - { key: ADMIN_PASSWORD, sync: false }
+      - { key: ADMIN_NAME, value: Admin }
+      - { key: SYNC_INTERVAL_HOURS, value: "6" }
+      - { key: BACKUP_KEEP, value: "14" }
+      - { key: ZOHO_DC, value: com }
+      - { key: ZOHO_CLIENT_ID, sync: false }
+      - { key: ZOHO_CLIENT_SECRET, sync: false }
+      - { key: ZOHO_REFRESH_TOKEN, sync: false }
+      - { key: ZOHO_ORG_ID, sync: false }
+      - { key: SHEETS_CSV_URL, sync: false }
